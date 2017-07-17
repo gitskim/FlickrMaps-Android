@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="com.example.patelneh.testproject.Main">
+
+
+        <TextView
+            style="@style/textFieldAlign"
+            android:fontFamily="sans-serif"
+            android:text="@string/header_main"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp"
+            >
+
+        </TextView>
+
+        <EditText
+            style="@style/textFieldAlign"
+            android:layout_width="300dp"
+            android:id="@+id/search"
+            android:gravity="center"
+            android:inputType="textNoSuggestions"
+            android:text="Enter photos to search"
+            />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="showOther"
+            android:text="Search"
+            android:textColor="#FFFFFF"
+            />
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="flickrCheck"
+            android:text="TEST"
+            android:textColor="#FFFFFF"
+            />
+
+</LinearLayout>
