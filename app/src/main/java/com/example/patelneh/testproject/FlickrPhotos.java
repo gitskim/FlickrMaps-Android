@@ -32,18 +32,19 @@ public class FlickrPhotos {
             String[] tags = new String[] {"Food"}; //TEST VALUE
 
             SearchParameters sp = new SearchParameters();
+            sp.setHasGeo(true);
             sp.setTags(tags);
 
             try {
-                PhotoList photoList = flickr.getPhotosInterface().search(sp, 6, 1);
+                PhotoList photoList = flickr.getPhotosInterface().search(sp, 500, 1);
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();){
                     Photo img = (Photo) iterator.next();
-                    if(img.getGeoData().getLatitude() == 0.0) {
+                    if(!img.hasGeoData()) {
                         Log.d("ERR", "NULL");
-                    } else{
-                        String s = Float.toString(img.getGeoData().getLatitude());
-                        Log.d("LAT", s);
-
+                        Log.d("TITLE", img.getTitle());
+                    }else{
+                        String imgLat = Float.toString(img.getGeoData().getLatitude());
+                        Log.d("Location", imgLat);
                     }
 //                    latitude.add(img.getGeoData().getLatitude());
                 }
