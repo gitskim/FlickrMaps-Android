@@ -2,10 +2,10 @@ package com.example.patelneh.testproject;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,7 +17,10 @@ import java.util.List;
 
 public class Main extends Activity {
 
-    List <Float> latitudeArray= new ArrayList<>();
+    public List<String> titles;
+    public List<Float> latitude;
+    public List<Float> longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,35 +37,31 @@ public class Main extends Activity {
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        startActivity(new Intent(this, TestProjMap.class));
-    }
-
-    public class FlickrQuery extends AsyncTask <Void, Void, Float[]> {
-
-        @Override
-        protected Float[] doInBackground(Void ... params) {
-            FlickrPhotos fp = new FlickrPhotos();
-            return fp.lat();
-        }
-
-        @Override
-        protected void onPostExecute(Float[] aFloat) {
-            super.onPostExecute(aFloat);
-            for(int i =0; i<aFloat.length; i++){
-                latitudeArray.add(aFloat[i]);
-            }
-        }
-    }
-
-    public void flickrCheck(View v) {
         new FlickrQuery().execute();
-        Float [] lat = new Float[latitudeArray.size()];
 
-        for (int i = 0; i<lat.length ; i++){
-            String iter = "RESULT" +i;
-            String val = Float.toString(lat[i]);
-            Log.d(iter, val);
+    }
+
+    private class FlickrQuery extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            FlickrPhotos fp = new FlickrPhotos();
+            fp.init();
+
+            titles =  new ArrayList<>(fp.getTitle());
+            latitude = new ArrayList<>(fp.getLat());
+            longitude = new ArrayList<>(fp.getLon());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void params) {
+            super.onPostExecute(params);
+            Log.d("STATUS", "COMPLETE");
+            Intent maps = new Intent(Main.this, TestProjMap.class);
+            maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(maps);
         }
     }
     
