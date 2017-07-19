@@ -31,9 +31,9 @@ public class FlickrPhotos {
         Flickr flickr = new Flickr(FLICKR_API_KEY, FLICKR_SECRET, new REST());
 
 
-        public void init () {
+        public void init (String[] userInputTags) {
             List<String> photoIdList = new ArrayList<>();
-            String[] tags = new String[] {"Food"}; //TEST VALUE
+            String[] tags = userInputTags;
             SearchParameters sp = new SearchParameters();
 
             sp.setTags(tags);
@@ -42,7 +42,7 @@ public class FlickrPhotos {
             sp.setAccuracy(16);
 
             try {
-                PhotoList photoList = flickr.getPhotosInterface().search(sp, 10, 4);
+                PhotoList photoList = flickr.getPhotosInterface().search(sp, 10, 5);
 
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
                     Photo img = (Photo) iterator.next();
@@ -78,10 +78,10 @@ public class FlickrPhotos {
             longitudeList = new ArrayList<>(longitudePoints);
         }
 
+
         public List<Float> getLat(){
             return latitudeList;
         }
-
         public List<Float> getLon(){
             return longitudeList;
         }

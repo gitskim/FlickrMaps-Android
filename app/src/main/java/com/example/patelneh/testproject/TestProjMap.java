@@ -48,6 +48,11 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
         titles = extras.getStringArrayExtra("TITLES");
         photoURL = extras.getStringArrayExtra("PHOTO_URL");
 
+        for (int i = 0; i < titles.length; i++) {
+            Log.d("TITLE", titles[i]);
+            Log.d("URL", photoURL[i]);
+        }
+
         setContentView(R.layout.activity_test_proj_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -76,7 +81,6 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
             e.printStackTrace();
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(0,0)));
-
     }
 
 

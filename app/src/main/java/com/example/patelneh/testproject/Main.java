@@ -17,6 +17,7 @@ import java.util.List;
 
 public class Main extends Activity {
 
+    public String[] tags;
     public List<String> titles;
     public List<String> photoURL;
     public List<Float> latitude;
@@ -37,6 +38,11 @@ public class Main extends Activity {
         if(searchQuery.trim().isEmpty()){
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
+        }else {
+            tags = searchQuery.split("\\s");
+            for(int i = 0; i < tags.length ;i++){
+                Log.d("TAG:" , tags[i]);
+            }
         }
         new FlickrQuery().execute();
 
@@ -47,7 +53,7 @@ public class Main extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             FlickrPhotos fp = new FlickrPhotos();
-            fp.init();
+            fp.init(tags);
 
             titles =  new ArrayList<>(fp.getTitle());
             photoURL = new ArrayList<>(fp.getPhotoURL());
