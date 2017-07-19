@@ -23,6 +23,7 @@ public class FlickrPhotos {
         private final String FLICKR_SECRET = "2dcb543f349e5a8c";
 
         private List <String> photoTitlesList = new ArrayList<>();
+        private List <String> photoURL = new ArrayList<>();
         private List <Float> latitudeList;
         private List <Float> longitudeList;
 
@@ -32,7 +33,7 @@ public class FlickrPhotos {
 
         public void init () {
             List<String> photoIdList = new ArrayList<>();
-            String[] tags = new String[] {"Birds", "Life", "Danger"}; //TEST VALUE
+            String[] tags = new String[] {"America"}; //TEST VALUE
             SearchParameters sp = new SearchParameters();
 
             sp.setTags(tags);
@@ -45,6 +46,7 @@ public class FlickrPhotos {
                     Photo img = (Photo) iterator.next();
                     photoIdList.add(img.getId());
                     photoTitlesList.add(img.getTitle()); //Add img titles to ArrayList
+                    photoURL.add(img.getMediumUrl()); //Adds img URLs to ArrayList
                 }
 
                 String[] photoIds = new String[photoIdList.size()];
@@ -56,7 +58,6 @@ public class FlickrPhotos {
             } catch (FlickrException e) {
                 e.printStackTrace();
             }
-
         }
 
         private void setLat(String[] photoId) {
@@ -97,6 +98,9 @@ public class FlickrPhotos {
 
         public List<String> getTitle(){
             return photoTitlesList;
+        }
+        public List<String> getPhotoURL(){
+            return photoURL;
         }
 
         //Turn Setters into Voids

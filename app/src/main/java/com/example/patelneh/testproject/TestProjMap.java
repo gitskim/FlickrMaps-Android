@@ -1,7 +1,11 @@
 package com.example.patelneh.testproject;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
+import android.util.Log;
+
 import com.flickr4java.flickr.*;
 
 import com.flickr4java.flickr.photos.PhotoList;
@@ -13,15 +17,29 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestProjMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    public double[] latitude;
+    public double[] longitude;
+    public String[] titles;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Values provided from the Main class
+        Intent extras = getIntent();
+        latitude = floatArrayToDouble(extras.getFloatArrayExtra("LATITUDE"));
+        longitude = floatArrayToDouble(extras.getFloatArrayExtra("LONGITUDE"));
+        titles = extras.getStringArrayExtra("TITLES");
+
         setContentView(R.layout.activity_test_proj_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -44,9 +62,38 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        flickrMarkers(googleMap , latitude , longitude, titles);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(0,0)));
 
     }
+
+
+
+    private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, String[] title ){
+        int arrayLength = 0;
+        if(lat.length == lon.length && lat.length == title.length){
+            arrayLength = lat.length;
+        }else{
+            Log.d("ERR", "UNEVEN ARRAY SIZES");
+            return;
+        }
+
+        for(int i = 0 ; i < arrayLength ; i++){
+            LatLng position = new LatLng(latitude[i], longitude[i]);
+            gm.addMarker(new MarkerOptions().position(position).title(title[i]));
+        }
+
+    }
+
+    private static double[] floatArrayToDouble(float[] fArray){
+        if(fArray == null){
+            Log.d("FLOAT ARRAY", "EMPTY");
+        }
+        double[] dArray = new double[fArray.length];
+        for(int i =0 ; i < fArray.length ; i++){
+            dArray[i] = fArray[i];
+        }
+        return dArray;
+    }
+
 }

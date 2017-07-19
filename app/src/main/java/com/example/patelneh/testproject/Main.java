@@ -59,10 +59,38 @@ public class Main extends Activity {
         protected void onPostExecute(Void params) {
             super.onPostExecute(params);
             Log.d("STATUS", "COMPLETE");
+
+            //Latitude Array
+            float[] latArray = floatListToPrim(latitude);
+
+            //Longitude Array
+            float[] lonArray = floatListToPrim(longitude);
+
+            //Titles Array
+            String[] titleArray = new String[titles.size()];
+            titles.toArray(titleArray);
+
+
             Intent maps = new Intent(Main.this, TestProjMap.class);
+
+            maps.putExtra("LATITUDE", latArray);
+            maps.putExtra("LONGITUDE",lonArray);
+            maps.putExtra("TITLES",titleArray);
+
             maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(maps);
         }
+    }
+
+
+    private float[] floatListToPrim (List<Float> fList){
+        float[] prim = new float[fList.size()];
+
+        for (int i = 0; i < prim.length; i++) {
+            prim[i] = fList.get(i);
+        }
+        return prim;
+
     }
     
 }
