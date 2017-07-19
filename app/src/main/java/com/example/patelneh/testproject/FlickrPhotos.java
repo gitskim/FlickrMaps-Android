@@ -33,14 +33,16 @@ public class FlickrPhotos {
 
         public void init () {
             List<String> photoIdList = new ArrayList<>();
-            String[] tags = new String[] {"America"}; //TEST VALUE
+            String[] tags = new String[] {"Food"}; //TEST VALUE
             SearchParameters sp = new SearchParameters();
 
             sp.setTags(tags);
             sp.setHasGeo(true);
+            sp.setBBox("-180", "-90", "180", "90");
+            sp.setAccuracy(16);
 
             try {
-                PhotoList photoList = flickr.getPhotosInterface().search(sp, 10, 1);
+                PhotoList photoList = flickr.getPhotosInterface().search(sp, 10, 4);
 
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
                     Photo img = (Photo) iterator.next();
@@ -52,39 +54,27 @@ public class FlickrPhotos {
                 String[] photoIds = new String[photoIdList.size()];
                 photoIdList.toArray(photoIds);
 
-                setLat(photoIds); //Adds latitude to ArrayList
-                setLon(photoIds); //Adds longitude to ArrayList
+                setLatLon(photoIds); //Adds latitude/longitude to ArrayList
 
             } catch (FlickrException e) {
                 e.printStackTrace();
             }
         }
 
-        private void setLat(String[] photoId) {
+        private void setLatLon(String[] photoId) {
             List <Float> latitudePoints = new ArrayList<>();
-            GeoInterface gi = flickr.getGeoInterface();
-
-            try {
-                for(String s : photoId) {
-                    latitudePoints.add(gi.getLocation(s).getLatitude());
-                }
-            } catch (FlickrException e) {
-                    e.printStackTrace();
-                }
-            latitudeList = new ArrayList<>(latitudePoints);
-        }
-
-        private void setLon(String[] photoId) {
             List <Float> longitudePoints = new ArrayList<>();
             GeoInterface gi = flickr.getGeoInterface();
 
             try {
                 for(String s : photoId) {
-                    longitudePoints.add(gi.getLocation(s).getLatitude());
+                    latitudePoints.add(gi.getLocation(s).getLatitude());
+                    longitudePoints.add(gi.getLocation(s).getLongitude());
                 }
             } catch (FlickrException e) {
-                e.printStackTrace();
-            }
+                    e.printStackTrace();
+                }
+            latitudeList = new ArrayList<>(latitudePoints);
             longitudeList = new ArrayList<>(longitudePoints);
         }
 
@@ -102,10 +92,4 @@ public class FlickrPhotos {
         public List<String> getPhotoURL(){
             return photoURL;
         }
-
-        //Turn Setters into Voids
-        //Have setters set the values of the private variables
-        //Create getters for the private variables
-        //Have the Main activity use getters and store variables locally
-        //Check if the values can be displayed via LOOP
 }

@@ -1,6 +1,8 @@
 package com.example.patelneh.testproject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
@@ -14,10 +16,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +34,7 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
     public double[] latitude;
     public double[] longitude;
     public String[] titles;
+    public String[] photoURL;
 
 
     @Override
@@ -39,6 +46,7 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
         latitude = floatArrayToDouble(extras.getFloatArrayExtra("LATITUDE"));
         longitude = floatArrayToDouble(extras.getFloatArrayExtra("LONGITUDE"));
         titles = extras.getStringArrayExtra("TITLES");
+        photoURL = extras.getStringArrayExtra("PHOTO_URL");
 
         setContentView(R.layout.activity_test_proj_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -62,25 +70,34 @@ public class TestProjMap extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
-        flickrMarkers(googleMap , latitude , longitude, titles);
+        try {
+            flickrMarkers(googleMap , latitude , longitude, titles, photoURL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(0,0)));
 
     }
 
 
 
-    private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, String[] title ){
+    private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, String[] title, String[] Url ) throws MalformedURLException {
         int arrayLength = 0;
-        if(lat.length == lon.length && lat.length == title.length){
+        if(lat.length == lon.length && lat.length == title.length && lat.length == Url.length){
             arrayLength = lat.length;
         }else{
             Log.d("ERR", "UNEVEN ARRAY SIZES");
             return;
         }
 
+        IconGenerator ig = new IconGenerator(this);
+
+        Bitmap bmp;
+
         for(int i = 0 ; i < arrayLength ; i++){
             LatLng position = new LatLng(latitude[i], longitude[i]);
-            gm.addMarker(new MarkerOptions().position(position).title(title[i]));
+            bmp = ig.makeIcon(title[i]);
+            gm.addMarker(new MarkerOptions().position(position).icon(BitmapDescriptorFactory.fromBitmap(bmp)));
         }
 
     }

@@ -18,6 +18,7 @@ import java.util.List;
 public class Main extends Activity {
 
     public List<String> titles;
+    public List<String> photoURL;
     public List<Float> latitude;
     public List<Float> longitude;
 
@@ -49,6 +50,7 @@ public class Main extends Activity {
             fp.init();
 
             titles =  new ArrayList<>(fp.getTitle());
+            photoURL = new ArrayList<>(fp.getPhotoURL());
             latitude = new ArrayList<>(fp.getLat());
             longitude = new ArrayList<>(fp.getLon());
 
@@ -70,12 +72,17 @@ public class Main extends Activity {
             String[] titleArray = new String[titles.size()];
             titles.toArray(titleArray);
 
+            //Photo URL Array
+            String [] photoURLArray = new String[photoURL.size()];
+            photoURL.toArray(photoURLArray);
+
 
             Intent maps = new Intent(Main.this, TestProjMap.class);
 
             maps.putExtra("LATITUDE", latArray);
             maps.putExtra("LONGITUDE",lonArray);
             maps.putExtra("TITLES",titleArray);
+            maps.putExtra("PHOTO_URL", photoURLArray);
 
             maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(maps);
