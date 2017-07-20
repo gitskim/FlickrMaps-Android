@@ -30,4 +30,5 @@ dependencies {
     compile files('/Users/patelneh/Desktop/TestProject/libs/flickr4java-2.7.jar')
     compile 'com.flickr4java:flickr4java:2.17'
     compile 'com.google.maps.android:android-maps-utils:0.5+'
+    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
 }
