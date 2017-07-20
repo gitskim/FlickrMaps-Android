@@ -23,20 +23,30 @@
 
         <EditText
             style="@style/textFieldAlign"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:id="@+id/search"
             android:gravity="center"
             android:inputType="textNoSuggestions"
-            android:text="Enter photos to search"
+            android:hint="Enter tags for photos"
             />
 
         <Button
-            android:layout_width="80dp"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:background="@color/colorPrimaryDark"
             android:onClick="showOther"
             android:text="Search"
+            android:textColor="#FFFFFF"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="showOther"
+            android:text="Photo List"
             android:textColor="#FFFFFF"
             />
 
