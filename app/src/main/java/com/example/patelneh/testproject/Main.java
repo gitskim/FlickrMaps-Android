@@ -27,10 +27,9 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
     }
 
-    public void showOther(View v){
+    public void showMap(View v){
         EditText et = new EditText(this);
         et = findViewById(R.id.search);
         String searchQuery = et.getText().toString();
@@ -45,6 +44,11 @@ public class Main extends Activity {
             }
         }
         new FlickrQuery().execute();
+
+    }
+
+    public void showList(View v){
+        Intent photoList = new Intent(this, PhotoList.class);
 
     }
 
@@ -81,8 +85,6 @@ public class Main extends Activity {
             //Photo URL Array
             String [] photoURLArray = new String[photoURL.size()];
             photoURL.toArray(photoURLArray);
-
-
             Intent maps = new Intent(Main.this, TestProjMap.class);
 
             maps.putExtra("LATITUDE", latArray);
