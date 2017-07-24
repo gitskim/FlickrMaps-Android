@@ -13,17 +13,17 @@ import java.util.List;
 
 public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.photoListViewHolder>{
 
-    private int itemCount;
-    private List<String> arrayList = new ArrayList();
+    private List<String> titleList;
 
-    //Constructor
+    //Constructor- where you want the data to be passed through during reference
     public PhotoListAdapter (List arrayList){
-        this.arrayList = arrayList;
+        this.titleList = new ArrayList<>(arrayList);
 
     }
 
-    //OnCreateViewHolder()
+    //OnCreateViewHolder
 
+    @Override
     public photoListViewHolder onCreateViewHolder (ViewGroup viewGroup, int viewType) {
 
         Context context = viewGroup.getContext();
@@ -36,30 +36,33 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
         return viewHolder;
     }
 
+    //Populates each item with data
+
     @Override
     public void onBindViewHolder(photoListViewHolder holder, int position) {
-        holder.bind(arrayList.get(position));
+        holder.bind(titleList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return itemCount;
+        return titleList.size();
     }
+
 
     class photoListViewHolder extends RecyclerView.ViewHolder {
 
         TextView photoListItem;
 
+        //Constructor
         public photoListViewHolder(View itemView) {
             super(itemView);
-
             photoListItem = (TextView) photoListItem.findViewById(R.id.photoListItem);
-
         }
+
+        //Conv. method
         void bind(String title) {
             photoListItem.setText(title);
         }
     }
 
-    //Pass in data in constructor and create ArrayList
 }

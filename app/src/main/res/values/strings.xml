@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Google Maps Test Project</string>
-    <string name="title_activity_test_proj_map">Google Maps Test Project</string>
+    <string name="app_name">Flickr Maps</string>
+    <string name="title_activity_test_proj_map">Flickr Maps</string>
     <string name="header_main">Google Map Photo Search</string>
 </resources>

@@ -41,7 +41,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".TestProjMap">
+            android:name=".MapView">
+        </activity>
+        <activity
+            android:name=".PhotoList">
         </activity>
     </application>
 

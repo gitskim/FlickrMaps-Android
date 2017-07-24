@@ -45,7 +45,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="showOther"
+            android:onClick="showList"
             android:text="Photo List"
             android:textColor="#FFFFFF"
             />

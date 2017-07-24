@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +49,7 @@ public class Main extends Activity {
     }
 
     public void showList(View v){
-        Intent photoList = new Intent(this, PhotoList.class);
+        new FlickrQuery().execute();
 
     }
 
@@ -85,15 +86,19 @@ public class Main extends Activity {
             //Photo URL Array
             String [] photoURLArray = new String[photoURL.size()];
             photoURL.toArray(photoURLArray);
-            Intent maps = new Intent(Main.this, TestProjMap.class);
+//            Intent maps = new Intent(Main.this, MapView.class);
 
-            maps.putExtra("LATITUDE", latArray);
-            maps.putExtra("LONGITUDE",lonArray);
-            maps.putExtra("TITLES",titleArray);
-            maps.putExtra("PHOTO_URL", photoURLArray);
+//            maps.putExtra("LATITUDE", latArray);
+//            maps.putExtra("LONGITUDE",lonArray);
+//            maps.putExtra("TITLES",titleArray);
+//            maps.putExtra("PHOTO_URL", photoURLArray);
 
-            maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplicationContext().startActivity(maps);
+//            maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            getApplicationContext().startActivity(maps);
+            Intent photoList = new Intent(Main.this, PhotoList.class);
+            photoList.putExtra("TITLE", (ArrayList<String>) titles);
+            photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(photoList);
         }
     }
 
