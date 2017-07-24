@@ -1,5 +1,7 @@
 package com.example.patelneh.testproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.flickr4java.flickr.Flickr;
@@ -17,26 +19,33 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class FlickrPhotos {
+public class FlickrPhotos implements Parcelable {
 
-        private final String FLICKR_API_KEY ="31971628224dc17872db15bdf51fc6cc";
-        private final String FLICKR_SECRET = "2dcb543f349e5a8c";
+        private static final String FLICKR_API_KEY ="31971628224dc17872db15bdf51fc6cc";
+        private static final String FLICKR_SECRET = "2dcb543f349e5a8c";
 
-        private List <String> photoTitlesList = new ArrayList<>();
-        private List <String> photoURL = new ArrayList<>();
+        private List <String> photoTitlesList;
+        private List <String> photoUrl;
         private List <Float> latitudeList;
         private List <Float> longitudeList;
-
 
         Flickr flickr = new Flickr(FLICKR_API_KEY, FLICKR_SECRET, new REST());
 
 
+        public FlickrPhotos () {
+
+            this.photoTitlesList = new ArrayList<>();
+            this.photoUrl = new ArrayList<>();
+            this.latitudeList = new ArrayList<>();
+            this.longitudeList = new ArrayList<>();
+        }
+
+
         public void init (String[] userInputTags) {
             List<String> photoIdList = new ArrayList<>();
-            String[] tags = userInputTags;
             SearchParameters sp = new SearchParameters();
 
-            sp.setTags(tags);
+            sp.setTags(userInputTags);
             sp.setHasGeo(true);
             sp.setBBox("-180", "-90", "180", "90");
             sp.setAccuracy(16);
@@ -47,41 +56,37 @@ public class FlickrPhotos {
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
                     Photo img = (Photo) iterator.next();
                     photoIdList.add(img.getId());
-                    photoTitlesList.add(img.getTitle()); //Add img titles to ArrayList
-                    photoURL.add(img.getMediumUrl()); //Adds img URLs to ArrayList
+                    photoTitlesList.add(img.getTitle());
+                    photoUrl.add(img.getMediumUrl());
                 }
 
-                String[] photoIds = new String[photoIdList.size()];
-                photoIdList.toArray(photoIds);
-
-                setLatLon(photoIds); //Adds latitude/longitude to ArrayList
+                setLatLon(photoIdList);
 
             } catch (FlickrException e) {
                 e.printStackTrace();
             }
         }
 
-        private void setLatLon(String[] photoId) {
-            List <Float> latitudePoints = new ArrayList<>();
-            List <Float> longitudePoints = new ArrayList<>();
+        private void setLatLon(List<String> photoId) {
             GeoInterface gi = flickr.getGeoInterface();
 
             try {
+
                 for(String s : photoId) {
-                    latitudePoints.add(gi.getLocation(s).getLatitude());
-                    longitudePoints.add(gi.getLocation(s).getLongitude());
+                    latitudeList.add(gi.getLocation(s).getLatitude());
+                    longitudeList.add(gi.getLocation(s).getLongitude());
                 }
+
             } catch (FlickrException e) {
                     e.printStackTrace();
                 }
-            latitudeList = new ArrayList<>(latitudePoints);
-            longitudeList = new ArrayList<>(longitudePoints);
         }
 
 
         public List<Float> getLat(){
             return latitudeList;
         }
+
         public List<Float> getLon(){
             return longitudeList;
         }
@@ -89,7 +94,42 @@ public class FlickrPhotos {
         public List<String> getTitle(){
             return photoTitlesList;
         }
+
         public List<String> getPhotoURL(){
-            return photoURL;
+            return photoUrl;
         }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(this.photoTitlesList);
+        dest.writeStringList(this.photoUrl);
+        dest.writeList(this.latitudeList);
+        dest.writeList(this.longitudeList);
+    }
+
+    protected FlickrPhotos(Parcel in) {
+        this.photoTitlesList = in.createStringArrayList();
+        this.photoUrl = in.createStringArrayList();
+        this.latitudeList = new ArrayList<Float>();
+        in.readList(this.latitudeList, Float.class.getClassLoader());
+        this.longitudeList = new ArrayList<Float>();
+        in.readList(this.longitudeList, Float.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<FlickrPhotos> CREATOR = new Parcelable.Creator<FlickrPhotos>() {
+        @Override
+        public FlickrPhotos createFromParcel(Parcel source) {
+            return new FlickrPhotos(source);
+        }
+
+        @Override
+        public FlickrPhotos[] newArray(int size) {
+            return new FlickrPhotos[size];
+        }
+    };
 }

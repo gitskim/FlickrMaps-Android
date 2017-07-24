@@ -28,6 +28,7 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
     }
 
     public void showMap(View v){
@@ -38,32 +39,47 @@ public class Main extends Activity {
         if(searchQuery.trim().isEmpty()){
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
-        }else {
-            tags = searchQuery.split("\\s");
-            for(int i = 0; i < tags.length ;i++){
-                Log.d("TAG:" , tags[i]);
-            }
         }
-        new FlickrQuery().execute();
+
+        float[] latArray = floatListToPrim(latitude);
+
+        float[] lonArray = floatListToPrim(longitude);
+
+        String[] titleArray = new String[titles.size()];
+        titles.toArray(titleArray);
+
+        String [] photoURLArray = new String[photoURL.size()];
+        photoURL.toArray(photoURLArray);
+
+        Intent maps = new Intent(Main.this, MapView.class);
+
+        maps.putExtra("LATITUDE", latArray);
+        maps.putExtra("LONGITUDE", lonArray);
+        maps.putExtra("TITLES", titleArray);
+        maps.putExtra("PHOTO_URL", photoURLArray);
+
+        maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(maps);
 
     }
 
     public void showList(View v){
         new FlickrQuery().execute();
-
     }
 
-    private class FlickrQuery extends AsyncTask<Void, Void, Void> {
+    private class FlickrQuery extends AsyncTask <Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
             FlickrPhotos fp = new FlickrPhotos();
             fp.init(tags);
+//
+//            titles =  new ArrayList<>(fp.getTitle());
+//            photoURL = new ArrayList<>(fp.getPhotoURL());
+//            latitude = new ArrayList<>(fp.getLat());
+//            longitude = new ArrayList<>(fp.getLon());
 
-            titles =  new ArrayList<>(fp.getTitle());
-            photoURL = new ArrayList<>(fp.getPhotoURL());
-            latitude = new ArrayList<>(fp.getLat());
-            longitude = new ArrayList<>(fp.getLon());
+
 
             return null;
         }
@@ -73,35 +89,13 @@ public class Main extends Activity {
             super.onPostExecute(params);
             Log.d("STATUS", "COMPLETE");
 
-            //Latitude Array
-            float[] latArray = floatListToPrim(latitude);
-
-            //Longitude Array
-            float[] lonArray = floatListToPrim(longitude);
-
-            //Titles Array
-            String[] titleArray = new String[titles.size()];
-            titles.toArray(titleArray);
-
-            //Photo URL Array
-            String [] photoURLArray = new String[photoURL.size()];
-            photoURL.toArray(photoURLArray);
-//            Intent maps = new Intent(Main.this, MapView.class);
-
-//            maps.putExtra("LATITUDE", latArray);
-//            maps.putExtra("LONGITUDE",lonArray);
-//            maps.putExtra("TITLES",titleArray);
-//            maps.putExtra("PHOTO_URL", photoURLArray);
-
-//            maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            getApplicationContext().startActivity(maps);
             Intent photoList = new Intent(Main.this, PhotoList.class);
             photoList.putExtra("TITLE", (ArrayList<String>) titles);
             photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getApplicationContext().startActivity(photoList);
+
         }
     }
-
 
     private float[] floatListToPrim (List<Float> fList){
         float[] prim = new float[fList.size()];
@@ -110,7 +104,6 @@ public class Main extends Activity {
             prim[i] = fList.get(i);
         }
         return prim;
-
     }
     
 }
