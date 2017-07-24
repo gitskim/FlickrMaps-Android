@@ -23,6 +23,7 @@ public class PhotoList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_list);
+
         //Get image titles from Main
         Intent extras = getIntent();
         photoTitles = new ArrayList<>(extras.getStringArrayListExtra("TITLE"));
@@ -30,7 +31,7 @@ public class PhotoList extends AppCompatActivity {
         photoList = (RecyclerView) findViewById(R.id.photoRecycler); //Recycler declaration
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         photoList.setLayoutManager(layoutManager); //Sets the type of layout manager for the recycler view
         photoList.setHasFixedSize(true);

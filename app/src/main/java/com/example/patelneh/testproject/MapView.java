@@ -67,7 +67,6 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
         try {
             flickrMarkers(googleMap , latitude , longitude, titles, photoURL);
         } catch (MalformedURLException e) {

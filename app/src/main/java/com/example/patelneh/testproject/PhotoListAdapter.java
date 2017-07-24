@@ -15,8 +15,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
 
     private List<String> titleList;
 
-    //Constructor- where you want the data to be passed through during reference
-    public PhotoListAdapter (List arrayList){
+    public PhotoListAdapter (List arrayList) {
         this.titleList = new ArrayList<>(arrayList);
 
     }
@@ -56,7 +55,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
         //Constructor
         public photoListViewHolder(View itemView) {
             super(itemView);
-            photoListItem = (TextView) photoListItem.findViewById(R.id.photoListItem);
+            photoListItem = (TextView) itemView.findViewById(R.id.photoListItem);
         }
 
         //Conv. method
