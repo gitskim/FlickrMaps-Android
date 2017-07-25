@@ -19,16 +19,14 @@ import com.google.maps.android.ui.IconGenerator;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
-    public double[] latitude;
-    public double[] longitude;
-    public String[] titles;
-    public String[] photoURL;
-
+    private List<FlickrPhotos> flickrParcelable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +34,15 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
         //Values provided from the Main class
         Intent extras = getIntent();
-        latitude = floatArrayToDouble(extras.getFloatArrayExtra("LATITUDE"));
-        longitude = floatArrayToDouble(extras.getFloatArrayExtra("LONGITUDE"));
-        titles = extras.getStringArrayExtra("TITLES");
-        photoURL = extras.getStringArrayExtra("PHOTO_URL");
+        flickrParcelable = new ArrayList<FlickrPhotos>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
 
-        for (int i = 0; i < titles.length; i++) {
-            Log.d("TITLE", titles[i]);
-            Log.d("URL", photoURL[i]);
-        }
+//        latitude = floatArrayToDouble(extras.getFloatArrayExtra("LATITUDE"));
+//        longitude = floatArrayToDouble(extras.getFloatArrayExtra("LONGITUDE"));
+//        titles = extras.getStringArrayExtra("TITLES");
+//        photoURL = extras.getStringArrayExtra("PHOTO_URL");
 
         setContentView(R.layout.map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -69,7 +64,13 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         mMap = googleMap;
 
         try {
-            flickrMarkers(googleMap , latitude , longitude, titles, photoURL);
+            flickrMarkers(
+                    googleMap ,
+                    floatListToDouble(flickrParcelable.get(0).getLat()) ,
+                    floatListToDouble(flickrParcelable.get(0).getLon()) ,
+                    flickrParcelable.get(0).getTitle() ,
+                    flickrParcelable.get(0).getPhotoURL()
+            );
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -78,9 +79,9 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-    private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, String[] title, String[] url ) throws MalformedURLException {
+    private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, List<String> title, List<String> url ) throws MalformedURLException {
         int arrayLength = 0;
-        if(lat.length == lon.length && lat.length == title.length && lat.length == url.length){
+        if(lat.length == lon.length && lat.length == title.size() && lat.length == url.size()){
             arrayLength = lat.length;
         }else{
             Log.d("ERR", "UNEVEN ARRAY SIZES");
@@ -88,24 +89,23 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         }
 
         IconGenerator ig = new IconGenerator(this);
-
         Bitmap bmp;
 
         for(int i = 0 ; i < arrayLength ; i++){
-            LatLng position = new LatLng(latitude[i], longitude[i]);
-            bmp = loadImageFromWeb(url[i]);
+            LatLng position = new LatLng(lat[i], lon[i]);
+            bmp = loadImageFromWeb(url.get(i));
             gm.addMarker(new MarkerOptions().position(position).icon(BitmapDescriptorFactory.fromBitmap(bmp)));
         }
 
     }
 
-    private static double[] floatArrayToDouble(float[] fArray){
-        if(fArray == null){
+    private  double[] floatListToDouble(List<Float> fList){
+        if(fList == null){
             Log.d("FLOAT ARRAY", "EMPTY");
         }
-        double[] dArray = new double[fArray.length];
-        for(int i =0 ; i < fArray.length ; i++){
-            dArray[i] = fArray[i];
+        double[] dArray = new double[fList.size()];
+        for(int i =0 ; i < fList.size() ; i++){
+            dArray[i] = fList.get(i);
         }
         return dArray;
     }

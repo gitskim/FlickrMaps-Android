@@ -51,7 +51,7 @@ public class FlickrPhotos implements Parcelable {
             sp.setAccuracy(16);
 
             try {
-                PhotoList photoList = flickr.getPhotosInterface().search(sp, 100, 5);
+                PhotoList photoList = flickr.getPhotosInterface().search(sp, 20, 5);
 
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
                     Photo img = (Photo) iterator.next();

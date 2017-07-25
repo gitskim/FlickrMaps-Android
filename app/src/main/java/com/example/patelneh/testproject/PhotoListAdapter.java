@@ -8,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flickr4java.flickr.Flickr;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.photoListViewHolder>{
 
-    private List<String> titleList;
+    private List<FlickrPhotos> flickrPhotosList;
 
     public PhotoListAdapter (List arrayList) {
-        this.titleList = new ArrayList<>(arrayList);
+        this.flickrPhotosList = new ArrayList<>(arrayList);
 
     }
 
@@ -35,16 +37,15 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
         return viewHolder;
     }
 
-    //Populates each item with data
-
     @Override
     public void onBindViewHolder(photoListViewHolder holder, int position) {
-        holder.bind(titleList.get(position));
+        //
+        holder.bind(flickrPhotosList.get(0).getTitle().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return titleList.size();
+        return flickrPhotosList.get(0).getTitle().size();
     }
 
 

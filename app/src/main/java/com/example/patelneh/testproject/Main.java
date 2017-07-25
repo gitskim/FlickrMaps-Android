@@ -23,6 +23,11 @@ public class Main extends Activity {
     public List<String> photoURL;
     public List<Float> latitude;
     public List<Float> longitude;
+    public ArrayList<FlickrPhotos> flickrParcelable;
+
+    public Main (){
+        this.flickrParcelable = new ArrayList<FlickrPhotos>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,32 +36,18 @@ public class Main extends Activity {
 
     }
 
-    public void showMap(View v){
-        EditText et = new EditText(this);
-        et = findViewById(R.id.search);
-        String searchQuery = et.getText().toString();
 
-        if(searchQuery.trim().isEmpty()){
-            Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
+    public void showMap(View v){
+
+        if(checkIfEmptyTags()){
             return;
         }
 
-        float[] latArray = floatListToPrim(latitude);
-
-        float[] lonArray = floatListToPrim(longitude);
-
-        String[] titleArray = new String[titles.size()];
-        titles.toArray(titleArray);
-
-        String [] photoURLArray = new String[photoURL.size()];
-        photoURL.toArray(photoURLArray);
+        new FlickrQuery().execute();
 
         Intent maps = new Intent(Main.this, MapView.class);
+        maps.putParcelableArrayListExtra("FLICKR", flickrParcelable);
 
-        maps.putExtra("LATITUDE", latArray);
-        maps.putExtra("LONGITUDE", lonArray);
-        maps.putExtra("TITLES", titleArray);
-        maps.putExtra("PHOTO_URL", photoURLArray);
 
         maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(maps);
@@ -64,46 +55,48 @@ public class Main extends Activity {
     }
 
     public void showList(View v){
+
+        if(checkIfEmptyTags()){
+            return;
+        }
+
         new FlickrQuery().execute();
+
+        Intent photoList = new Intent(Main.this, PhotoList.class);
+        photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(photoList);
+
     }
 
     private class FlickrQuery extends AsyncTask <Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... params) {
+
             FlickrPhotos fp = new FlickrPhotos();
             fp.init(tags);
-//
-//            titles =  new ArrayList<>(fp.getTitle());
-//            photoURL = new ArrayList<>(fp.getPhotoURL());
-//            latitude = new ArrayList<>(fp.getLat());
-//            longitude = new ArrayList<>(fp.getLon());
-
-
-
+            flickrParcelable.add(fp);
             return null;
+
         }
 
         @Override
         protected void onPostExecute(Void params) {
             super.onPostExecute(params);
             Log.d("STATUS", "COMPLETE");
-
-            Intent photoList = new Intent(Main.this, PhotoList.class);
-            photoList.putExtra("TITLE", (ArrayList<String>) titles);
-            photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplicationContext().startActivity(photoList);
-
         }
     }
 
-    private float[] floatListToPrim (List<Float> fList){
-        float[] prim = new float[fList.size()];
+    public boolean checkIfEmptyTags (){
+        EditText et = new EditText(this);
+        et = findViewById(R.id.search);
+        String searchQuery = et.getText().toString();
 
-        for (int i = 0; i < prim.length; i++) {
-            prim[i] = fList.get(i);
+        if(searchQuery.trim().isEmpty()){
+            Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
+            return true;
         }
-        return prim;
+
+        return false;
     }
     
 }
