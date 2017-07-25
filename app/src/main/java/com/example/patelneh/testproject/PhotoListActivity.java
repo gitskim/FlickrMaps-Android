@@ -14,7 +14,7 @@ import com.flickr4java.flickr.photos.Photo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoList extends AppCompatActivity {
+public class PhotoListActivity extends AppCompatActivity {
 
     private List<FlickrPhotos> flickrParcelable;
     private PhotoListAdapter photoListAdapter;
@@ -26,17 +26,13 @@ public class PhotoList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_list);
 
-        //Get image titles from Main
         Intent extras = getIntent();
-//        photoTitles = new ArrayList<>(extras.getStringArrayListExtra("TITLE"));
 
-        //PARCELABLE
-        flickrParcelable = new ArrayList<FlickrPhotos>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
+        flickrParcelable = new ArrayList<>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
 
-        photoList = (RecyclerView) findViewById(R.id.photoRecycler); //Recycler declaration
+        photoList = (RecyclerView) findViewById(R.id.photoRecycler);
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         photoList.setLayoutManager(layoutManager); //Sets the type of layout manager for the recycler view
         photoList.setHasFixedSize(true);

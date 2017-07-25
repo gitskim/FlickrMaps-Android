@@ -32,14 +32,8 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Values provided from the Main class
         Intent extras = getIntent();
-        flickrParcelable = new ArrayList<FlickrPhotos>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
-
-//        latitude = floatArrayToDouble(extras.getFloatArrayExtra("LATITUDE"));
-//        longitude = floatArrayToDouble(extras.getFloatArrayExtra("LONGITUDE"));
-//        titles = extras.getStringArrayExtra("TITLES");
-//        photoURL = extras.getStringArrayExtra("PHOTO_URL");
+        flickrParcelable = new ArrayList<>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
 
         setContentView(R.layout.map);
 
@@ -48,16 +42,6 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
 
     public void onMapReady(GoogleMap googleMap) {
@@ -99,12 +83,12 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-    private  double[] floatListToDouble(List<Float> fList){
+    private double[] floatListToDouble(List<Float> fList){
         if(fList == null){
             Log.d("FLOAT ARRAY", "EMPTY");
         }
         double[] dArray = new double[fList.size()];
-        for(int i =0 ; i < fList.size() ; i++){
+        for(int i = 0 ; i < fList.size() ; i++){
             dArray[i] = fList.get(i);
         }
         return dArray;

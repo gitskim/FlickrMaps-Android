@@ -2,11 +2,9 @@ package com.example.patelneh.testproject;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -62,7 +60,7 @@ public class Main extends Activity {
 
         new FlickrQuery().execute();
 
-        Intent photoList = new Intent(Main.this, PhotoList.class);
+        Intent photoList = new Intent(Main.this, PhotoListActivity.class);
         photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(photoList);
 
