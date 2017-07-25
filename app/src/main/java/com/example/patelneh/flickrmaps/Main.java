@@ -92,7 +92,7 @@ public class Main extends Activity {
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return true;
         }
-
+        tags = searchQuery.split("\\s");
         return false;
     }
     
