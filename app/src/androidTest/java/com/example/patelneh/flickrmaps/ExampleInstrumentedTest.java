@@ -1,4 +1,4 @@
-package com.example.patelneh.testproject;
+package com.example.patelneh.flickrmaps;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

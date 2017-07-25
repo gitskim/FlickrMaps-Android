@@ -1,4 +1,4 @@
-package com.example.patelneh.testproject;
+package com.example.patelneh.flickrmaps;
 
 
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.flickr4java.flickr.Flickr;
 
 import java.util.ArrayList;
 import java.util.List;

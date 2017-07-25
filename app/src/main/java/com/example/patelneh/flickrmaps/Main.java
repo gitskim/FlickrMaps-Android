@@ -1,4 +1,4 @@
-package com.example.patelneh.testproject;
+package com.example.patelneh.flickrmaps;
 
 
 import android.app.Activity;
@@ -24,7 +24,7 @@ public class Main extends Activity {
     public ArrayList<FlickrPhotos> flickrParcelable;
 
     public Main (){
-        this.flickrParcelable = new ArrayList<FlickrPhotos>();
+        this.flickrParcelable = new ArrayList<>();
     }
 
     @Override
@@ -85,8 +85,7 @@ public class Main extends Activity {
     }
 
     public boolean checkIfEmptyTags (){
-        EditText et = new EditText(this);
-        et = findViewById(R.id.search);
+        EditText et = new EditText(this).findViewById(R.id.search);
         String searchQuery = et.getText().toString();
 
         if(searchQuery.trim().isEmpty()){

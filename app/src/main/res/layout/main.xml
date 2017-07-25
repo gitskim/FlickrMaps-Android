@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="com.example.patelneh.testproject.Main">
+    tools:context="com.example.patelneh.flickrmaps.Main">
 
 
         <TextView

@@ -1,15 +1,11 @@
-package com.example.patelneh.testproject;
+package com.example.patelneh.flickrmaps;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.flickr4java.flickr.Flickr;
-import com.flickr4java.flickr.photos.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
