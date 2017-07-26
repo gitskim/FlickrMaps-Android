@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PhotoListActivity extends AppCompatActivity {
 
@@ -24,7 +25,16 @@ public class PhotoListActivity extends AppCompatActivity {
 
         Intent extras = getIntent();
 
-        flickrParcelable = new ArrayList<>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
+        String [] userTags = extras.getStringArrayExtra("TAGS");
+
+
+        try {
+            flickrParcelable =  new FlickrAsyncTask().execute(userTags).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         photoList = (RecyclerView) findViewById(R.id.photoRecycler);
 

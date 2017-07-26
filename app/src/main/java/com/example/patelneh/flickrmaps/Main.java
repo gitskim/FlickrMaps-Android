@@ -37,11 +37,20 @@ public class Main extends Activity {
 
     public void showMap(View v){
 
-        if(checkIfEmptyTags()){
+        setTags();
+
+        if(tags.length == 0){
+            Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        new FlickrQuery().execute();
+
+
+        EditText et = new EditText(this).findViewById(R.id.search);
+        String searchQuery = et.getText().toString();
+
+        tags = searchQuery.split("\\s");
+//        new FlickrQuery().execute();
 
         Intent maps = new Intent(Main.this, MapView.class);
         maps.putParcelableArrayListExtra("FLICKR", flickrParcelable);
@@ -54,46 +63,30 @@ public class Main extends Activity {
 
     public void showList(View v){
 
-        if(checkIfEmptyTags()){
+        setTags();
+
+        if(tags.length == 0){
+            Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        new FlickrQuery().execute();
+        //MOVE THIS OUTSIDE TO THE APPROPRIATE CLASSES.... RUN IT THERE... AND
+        //FOR THE EXTRAS... ADD THE STRING[] TAGS SO IT COULD BE USED ON THE ASYNC TASK
 
         Intent photoList = new Intent(Main.this, PhotoListActivity.class);
+        photoList.putExtra("TAGS", tags);
         photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(photoList);
 
     }
 
-    private class FlickrQuery extends AsyncTask <Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            FlickrPhotos fp = new FlickrPhotos();
-            fp.init(tags);
-            flickrParcelable.add(fp);
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Void params) {
-            super.onPostExecute(params);
-            Log.d("STATUS", "COMPLETE");
-        }
-    }
-
-    public boolean checkIfEmptyTags (){
-        EditText et = new EditText(this).findViewById(R.id.search);
+    public void setTags() {
+        EditText et = new EditText(this);
+        et = findViewById(R.id.search);
         String searchQuery = et.getText().toString();
 
-        if(searchQuery.trim().isEmpty()){
-            Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
-            return true;
-        }
         tags = searchQuery.split("\\s");
-        return false;
+
     }
     
 }
