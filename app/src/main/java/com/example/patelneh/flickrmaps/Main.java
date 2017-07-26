@@ -44,20 +44,12 @@ public class Main extends Activity {
             return;
         }
 
-
-
-        EditText et = new EditText(this).findViewById(R.id.search);
-        String searchQuery = et.getText().toString();
-
-        tags = searchQuery.split("\\s");
-//        new FlickrQuery().execute();
-
         Intent maps = new Intent(Main.this, MapView.class);
-        maps.putParcelableArrayListExtra("FLICKR", flickrParcelable);
-
+        maps.putExtra("TAGS", tags);
 
         maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(maps);
+
 
     }
 
@@ -70,11 +62,9 @@ public class Main extends Activity {
             return;
         }
 
-        //MOVE THIS OUTSIDE TO THE APPROPRIATE CLASSES.... RUN IT THERE... AND
-        //FOR THE EXTRAS... ADD THE STRING[] TAGS SO IT COULD BE USED ON THE ASYNC TASK
-
         Intent photoList = new Intent(Main.this, PhotoListActivity.class);
         photoList.putExtra("TAGS", tags);
+
         photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(photoList);
 

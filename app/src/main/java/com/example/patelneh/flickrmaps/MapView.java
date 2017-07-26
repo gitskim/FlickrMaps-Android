@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
@@ -33,7 +34,15 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
 
         Intent extras = getIntent();
-        flickrParcelable = new ArrayList<>(extras.<FlickrPhotos>getParcelableArrayListExtra("FLICKR"));
+        String [] userTags = extras.getStringArrayExtra("TAGS");
+
+        try {
+            flickrParcelable = new FlickrAsyncTask().execute(userTags).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.map);
 
@@ -77,7 +86,7 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
         for(int i = 0 ; i < arrayLength ; i++){
             LatLng position = new LatLng(lat[i], lon[i]);
-            bmp = loadImageFromWeb(url.get(i));
+            bmp = ig.makeIcon(title.get(i));
             gm.addMarker(new MarkerOptions().position(position).icon(BitmapDescriptorFactory.fromBitmap(bmp)));
         }
 
