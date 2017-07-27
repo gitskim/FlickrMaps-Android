@@ -25,7 +25,8 @@ public class FetchImgAsyncTask extends AsyncTask<String, Void, Bitmap> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bmp;
+        Bitmap resized = Bitmap.createBitmap(bmp,0,0,150,150);
+        return resized;
     }
 
     @Override
