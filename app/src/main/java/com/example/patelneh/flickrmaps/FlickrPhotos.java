@@ -47,13 +47,13 @@ public class FlickrPhotos implements Parcelable {
             sp.setAccuracy(16);
 
             try {
-                PhotoList photoList = flickr.getPhotosInterface().search(sp, 20, 5);
+                PhotoList photoList = flickr.getPhotosInterface().search(sp, 30, 5);
 
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
                     Photo img = (Photo) iterator.next();
                     photoIdList.add(img.getId());
                     photoTitlesList.add(img.getTitle());
-                    photoUrl.add(img.getMediumUrl());
+                    photoUrl.add(img.getSmallUrl());
                 }
 
                 setLatLon(photoIdList);

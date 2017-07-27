@@ -16,7 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
 
     private List<FlickrPhotos> flickrParcelable;
+
+    private List<Bitmap> flickrImgs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,17 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
+
+        for (String url :flickrParcelable.get(0).getPhotoURL()) {
+            try {
+                flickrImgs.add(new FetchImgAsyncTask().execute(url).get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
         setContentView(R.layout.map);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -51,10 +66,12 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
+
     @Override
 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
 
         try {
             flickrMarkers(
@@ -67,6 +84,7 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(0,0)));
     }
 
@@ -74,6 +92,7 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
     private void flickrMarkers (GoogleMap gm, double[] lat , double[] lon, List<String> title, List<String> url ) throws MalformedURLException {
         int arrayLength = 0;
+
         if(lat.length == lon.length && lat.length == title.size() && lat.length == url.size()){
             arrayLength = lat.length;
         }else{
@@ -83,11 +102,10 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
 
         IconGenerator ig = new IconGenerator(this);
         Bitmap bmp;
-
         for(int i = 0 ; i < arrayLength ; i++){
             LatLng position = new LatLng(lat[i], lon[i]);
-            bmp = ig.makeIcon(title.get(i));
-            gm.addMarker(new MarkerOptions().position(position).icon(BitmapDescriptorFactory.fromBitmap(bmp)));
+                gm.addMarker(new MarkerOptions().position(position).title(title.get(i)).icon(BitmapDescriptorFactory.fromBitmap(flickrImgs.get(i))));
+
         }
 
     }
@@ -103,13 +121,16 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
         return dArray;
     }
 
-    public static Bitmap loadImageFromWeb(String url) {
+    public static Bitmap getBitmapFromURL(String src) {
         try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Bitmap b = BitmapFactory.decodeStream(is);
-            Log.d("DRAWABLE", "COMPLETE");
-            return b;
-        } catch (Exception e) {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
