@@ -144,14 +144,14 @@ public class MapView extends FragmentActivity implements OnMapReadyCallback {
     }
 
     private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Bitmap output = Bitmap.createBitmap(150,
+               150, Bitmap.Config.ARGB_8888);
 
         final Canvas canvas = new Canvas(output);
 
-        final int color = Color.RED;
+        final int color = Color.WHITE;
         final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final Rect rect = new Rect(0, 0,output.getHeight(), output.getWidth());
         final RectF rectF = new RectF(rect);
 
         paint.setAntiAlias(true);

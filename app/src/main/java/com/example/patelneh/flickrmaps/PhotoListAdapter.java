@@ -2,10 +2,12 @@ package com.example.patelneh.flickrmaps;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,9 +16,11 @@ import java.util.List;
 public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.photoListViewHolder>{
 
     private List<FlickrPhotos> flickrPhotosList;
+    private List<Bitmap> flickrImg;
 
-    public PhotoListAdapter (List arrayList) {
-        this.flickrPhotosList = new ArrayList<>(arrayList);
+    public PhotoListAdapter (List titleList, List imgList) {
+        this.flickrPhotosList = new ArrayList<>(titleList);
+        this.flickrImg = new ArrayList<>(imgList);
 
     }
 
@@ -38,7 +42,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
     @Override
     public void onBindViewHolder(photoListViewHolder holder, int position) {
         //
-        holder.bind(flickrPhotosList.get(0).getTitle().get(position));
+        holder.titleBind(flickrPhotosList.get(0).getTitle().get(position));
+        holder.imgBind(flickrImg.get(position));
     }
 
     @Override
@@ -49,18 +54,26 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
 
     class photoListViewHolder extends RecyclerView.ViewHolder {
 
-        TextView photoListItem;
+        TextView photoListTitle;
+        ImageView photoListImg;
 
         //Constructor
         public photoListViewHolder(View itemView) {
             super(itemView);
-            photoListItem = (TextView) itemView.findViewById(R.id.photoListItem);
+            photoListTitle = (TextView) itemView.findViewById(R.id.photoListTitle);
+            photoListImg = (ImageView) itemView.findViewById(R.id.photoListImg);
         }
 
-        //Conv. method
-        void bind(String title) {
-            photoListItem.setText(title);
+        //Conv. methods
+        void titleBind(String title) {
+            photoListTitle.setText(title);
         }
+
+        void imgBind (Bitmap img){
+            img.setHeight(150);
+            photoListImg.setImageBitmap();
+        }
+
     }
 
 }

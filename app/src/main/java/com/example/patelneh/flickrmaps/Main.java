@@ -64,7 +64,6 @@ public class Main extends Activity {
 
         Intent photoList = new Intent(Main.this, PhotoListActivity.class);
         photoList.putExtra("TAGS", tags);
-
         photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(photoList);
 
