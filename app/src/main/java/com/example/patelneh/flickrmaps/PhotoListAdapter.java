@@ -70,8 +70,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
         }
 
         void imgBind (Bitmap img){
-            img.setHeight(150);
-            photoListImg.setImageBitmap();
+            photoListImg.setImageBitmap(img);
         }
 
     }

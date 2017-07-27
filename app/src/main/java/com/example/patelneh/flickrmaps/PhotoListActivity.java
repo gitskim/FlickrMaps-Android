@@ -52,7 +52,6 @@ public class PhotoListActivity extends AppCompatActivity {
         photoList = (RecyclerView) findViewById(R.id.photoRecycler);
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
-
         photoList.setLayoutManager(layoutManager);
         photoList.setHasFixedSize(true);
 
