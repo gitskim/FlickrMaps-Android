@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +23,20 @@ public class PhotoListActivity extends AppCompatActivity {
     private List<Bitmap> flickrImgs = new ArrayList<>();
     private PhotoListAdapter photoListAdapter;
     private RecyclerView photoList;
-
+    private ProgressBar pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.photo_list);
+
+        photoList = (RecyclerView) findViewById(R.id.photoRecycler);
+
 
         Intent extras = getIntent();
 
         String [] userTags = extras.getStringArrayExtra("TAGS");
-
 
         try {
             flickrParcelable =  new FlickrAsyncTask().execute(userTags).get();
@@ -36,6 +44,7 @@ public class PhotoListActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }finally {
         }
 
         for (String url :flickrParcelable.get(0).getPhotoURL()) {
@@ -49,7 +58,6 @@ public class PhotoListActivity extends AppCompatActivity {
         }
 
 
-        photoList = (RecyclerView) findViewById(R.id.photoRecycler);
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
         photoList.setLayoutManager(layoutManager);

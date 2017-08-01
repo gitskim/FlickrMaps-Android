@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -16,12 +17,13 @@ import java.util.List;
 
 public class Main extends Activity {
 
-    public String[] tags;
-    public List<String> titles;
-    public List<String> photoURL;
-    public List<Float> latitude;
-    public List<Float> longitude;
-    public ArrayList<FlickrPhotos> flickrParcelable;
+    private String[] tags;
+    private List<String> titles;
+    private List<String> photoURL;
+    private List<Float> latitude;
+    private List<Float> longitude;
+    private ArrayList<FlickrPhotos> flickrParcelable;
+
 
     public Main (){
         this.flickrParcelable = new ArrayList<>();
@@ -64,7 +66,6 @@ public class Main extends Activity {
 
         Intent photoList = new Intent(Main.this, PhotoListActivity.class);
         photoList.putExtra("TAGS", tags);
-        photoList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(photoList);
 
     }
