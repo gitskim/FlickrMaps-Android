@@ -32,7 +32,7 @@ This project was a learning experience with Unit Testing and JUnit
 
 Test functions can be grouped into hieracrchies. Setups are inherited from the outer classes.  The setup from the outer classes run first than the inner before the test function(s) run. 
 
-In J-Unit, to create a hierarchy like this, you must used nested classes that can inherit any outer classes. If an outer class is needed only for its setup, you must include a 'dummy' test function.
+In J-Unit, to create a hierarchy like this, you must used nested classes that can inherit any outer classes.
 
 
 #### Action
