@@ -47,6 +47,10 @@ public class FlickrPhotos implements Parcelable {
             sp.setAccuracy(16);
 
             try {
+                //FIXME when setting a number to more than 10, it crashes ...
+                //FIXME async task blocks the whole program ...
+                //FIXME Exception Caused by: java.lang.ClassNotFoundException:
+                // Didn't find class "java.beans.Introspector" on path:
                 PhotoList photoList = flickr.getPhotosInterface().search(sp, 10, 5);
 
                 for(Iterator iterator = photoList.iterator(); iterator.hasNext();) {
