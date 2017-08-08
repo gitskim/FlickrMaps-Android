@@ -18,13 +18,11 @@ public class PhotoListAdapter extends RecyclerView.Adapter <PhotoListAdapter.pho
     private List<FlickrPhotos> flickrPhotosList;
     private List<Bitmap> flickrImg;
 
-    public PhotoListAdapter (List titleList, List imgList) {
+    public PhotoListAdapter (List<FlickrPhotos> titleList, List<Bitmap> imgList) {
         this.flickrPhotosList = new ArrayList<>(titleList);
         this.flickrImg = new ArrayList<>(imgList);
 
     }
-
-    //OnCreateViewHolder
 
     @Override
     public photoListViewHolder onCreateViewHolder (ViewGroup viewGroup, int viewType) {

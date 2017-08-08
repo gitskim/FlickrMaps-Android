@@ -30,7 +30,7 @@
         -->
 
         <activity
-            android:name="com.example.patelneh.flickrmaps.Main"
+            android:name="com.example.patelneh.flickrmaps.MainActivity"
             android:label="@string/title_activity_test_proj_map">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -3,19 +3,16 @@ package com.example.patelneh.flickrmaps;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Main extends Activity {
+public class MainActivity extends Activity {
 
     private String[] tags;
     private List<String> titles;
@@ -25,7 +22,7 @@ public class Main extends Activity {
     private ArrayList<FlickrPhotos> flickrParcelable;
 
 
-    public Main (){
+    public MainActivity() {
         this.flickrParcelable = new ArrayList<>();
     }
 
@@ -37,16 +34,16 @@ public class Main extends Activity {
     }
 
 
-    public void showMap(View v){
+    public void showMap(View v) {
 
         setTags();
 
-        if(tags.length == 0){
+        if (tags == null) {
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Intent maps = new Intent(Main.this, MapView.class);
+        Intent maps = new Intent(MainActivity.this, MapView.class);
         maps.putExtra("TAGS", tags);
 
         maps.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -55,16 +52,16 @@ public class Main extends Activity {
 
     }
 
-    public void showList(View v){
+    public void showList(View v) {
 
         setTags();
 
-        if(tags.length == 0){
+        if (tags == null) {
             Toast.makeText(this, "Enter a value", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Intent photoList = new Intent(Main.this, PhotoListActivity.class);
+        Intent photoList = new Intent(MainActivity.this, PhotoListActivity.class);
         photoList.putExtra("TAGS", tags);
         getApplicationContext().startActivity(photoList);
 
@@ -73,10 +70,16 @@ public class Main extends Activity {
     public void setTags() {
         EditText et = new EditText(this);
         et = findViewById(R.id.search);
-        String searchQuery = et.getText().toString();
+        String [] searchQuery = et.getText().toString().split("\\s");
 
-        tags = searchQuery.split("\\s");
+        if(searchQuery[0].equals("")){
+            return;
+        }
 
+        tags = searchQuery;
     }
-    
+
+    public String[] getTags() {
+        return tags;
+    }
 }

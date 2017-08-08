@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="com.example.patelneh.flickrmaps.Main">
+    tools:context="com.example.patelneh.flickrmaps.MainActivity">
 
 
         <TextView
@@ -31,6 +31,7 @@
             />
 
         <Button
+            android:id="@+id/show_map_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
@@ -41,6 +42,7 @@
             />
 
         <Button
+            android:id="@+id/show_list_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
