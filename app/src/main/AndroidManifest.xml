@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.patelneh.testproject">
+    package="com.example.patelneh.flickrmaps">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -8,6 +8,9 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +30,7 @@
         -->
 
         <activity
-            android:name=".Main"
+            android:name="com.example.patelneh.flickrmaps.MainActivity"
             android:label="@string/title_activity_test_proj_map">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +43,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".TestProjMap">
+            android:name="com.example.patelneh.flickrmaps.MapView">
+        </activity>
+        <activity
+            android:name="com.example.patelneh.flickrmaps.PhotoListActivity">
         </activity>
     </application>
 
